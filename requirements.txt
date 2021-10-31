@@ -1,0 +1,4 @@
+sshtunnel~=0.4.0
+click~=8.0.3
+rich~=10.12.0
+boto3~=1.19.7

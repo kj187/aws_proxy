@@ -1,0 +1,9 @@
+stages:
+  - toolbox
+
+toolbox:
+  only:
+    - master
+  stage: toolbox
+  trigger:
+    project: elmerdigital/infrastructure/images/toolbox

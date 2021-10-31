@@ -1,0 +1,12 @@
+.idea/
+*.pem
+*.log
+*.out
+init.log
+_generated_*.tf
+.env
+*.backup
+.DS_Store
+temp
+venv
+__pycache__
