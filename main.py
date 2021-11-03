@@ -20,6 +20,7 @@ console = Console()
 @click.option('--aws-profile', required=True, help='The AWS profile name')
 @click.option('--bastion-host', required=True, default="", help='Host of ')
 @click.option('--bastion-port', required=True, default=22, help='Host of ')
+@click.option('--bastion-label-selector', default="tag:Name=bastion", help='')
 @click.option('--bastion-username', required=True, default="", help='Username for SSH XXXXXXX')
 @click.option('--bastion-identity-file', default="", help='Path to SSH identity file')
 @click.option('--bastion-config-file', default="~/.ssh/config", help='Path to SSH config file')
@@ -31,6 +32,7 @@ def cli(
         aws_profile: str,
         bastion_host: str,
         bastion_port: int,
+        bastion_label_selector: str,
         bastion_username: str,
         bastion_identity_file: str,
         bastion_config_file: str
@@ -45,15 +47,18 @@ def cli(
         logging_level = "NOTSET"
     logging.basicConfig(level=logging_level, format="%(message)s", datefmt="[%X]", handlers=[RichHandler(rich_tracebacks=False)])
 
+    aws_client = AwsClient(profile_name=aws_profile)
     ctx.obj = {
         "logger": logging.getLogger("rich"),
-        "aws_client": AwsClient(profile_name=aws_profile),
+        "aws_client": aws_client,
         "bastion": Bastion(
             host=bastion_host,
             port=bastion_port,
+            label_selector=bastion_label_selector,
             username=bastion_username,
             identity_file=bastion_identity_file,
             config_file=bastion_config_file,
+            aws_client=aws_client,
         )
     }
 

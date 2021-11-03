@@ -58,6 +58,9 @@ python main.py --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-use
 python main.py --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-username firstname.lastname opensearch --local-bind-port 8888 --cluster-name CLUSTERNAME
 ```
 
+You can also ignore the `--bastion-host` flag, in this case the `--bastion-label-selector` flag with its default value of `tag:Name=bastion` comes into play. 
+It will search an EC2 instance with a tag "Name" and with the Value "bastion". So, just tag your bastion host with this Key=Value. 
+
 ## Based on 
 
 - Python 3+ 
