@@ -16,6 +16,13 @@ __version__ = '1.0.0'
 console = Console()
 
 
+def version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(__version__)
+    ctx.exit()
+
+
 @click.option('--debug', is_flag=True, help='Show debug output')
 @click.option('--aws-profile', required=True, help='The AWS profile name')
 @click.option('--bastion-host', required=True, default="", help='Host of ')
@@ -24,6 +31,7 @@ console = Console()
 @click.option('--bastion-username', required=True, default="", help='Username for SSH XXXXXXX')
 @click.option('--bastion-identity-file', default="", help='Path to SSH identity file')
 @click.option('--bastion-config-file', default="~/.ssh/config", help='Path to SSH config file')
+@click.option('--version', is_flag=True, callback=version, expose_value=False, is_eager=True)
 @click.group()
 @click.pass_context
 def cli(
@@ -63,20 +71,13 @@ def cli(
     }
 
 
-@click.command()
-def version():
-    """Show version number"""
-    click.echo(__version__)
-
-
 if __name__ == "__main__":
     try:
-        cli.add_command(version)
         cli.add_command(rabbitmq)
         cli.add_command(rds)
         cli.add_command(opensearch)
         cli.add_command(elasticache)
-        cli()
+        cli(obj={})
     except Exception as error:
         print(f"TODO in main.py: {error}")
         sys.exit(1)
