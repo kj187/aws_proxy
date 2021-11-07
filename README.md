@@ -53,9 +53,9 @@ You need also configure the security group of your protected AWS services to all
 ## Examples
 
 ``` 
-python main.py --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-username firstname.lastname opensearch
-python main.py --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-username firstname.lastname opensearch --local-bind-port 8888
-python main.py --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-username firstname.lastname opensearch --local-bind-port 8888 --cluster-name CLUSTERNAME
+aws_proxy --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-username firstname.lastname opensearch
+aws_proxy --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-username firstname.lastname opensearch --local-bind-port 8888
+aws_proxy --aws-profile AWSPROFILENAME --bastion-host 1.2.3.4 --bastion-username firstname.lastname opensearch --local-bind-port 8888 --cluster-name CLUSTERNAME
 ```
 
 You can also ignore the `--bastion-host` flag, in this case the `--bastion-label-selector` flag with its default value of `tag:Name=bastion` comes into play. 

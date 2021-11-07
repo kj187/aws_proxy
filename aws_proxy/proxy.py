@@ -22,7 +22,7 @@ class SshProxy:
         self.__console = Console()
         self.logger = logger
         self.bastion = bastion
-        self.local_bind_host = "127.0.0.1"
+        self.local_bind_host = "0.0.0.0"
         self.local_bind_port = local_bind_port
 
     def __del__(self):
@@ -48,7 +48,7 @@ class SshProxy:
         )
         self.__server.start()
 
-        self.__table.add_row("", "", style="on blue")
+        self.__table.add_row("----------------------", "--------------------------------------------------------------------")
         self.__table.add_row("Local proxy", f"{self.__server.local_bind_host}:{self.__server.local_bind_port}")
         self.__table.add_row("proxied to", f"{remote_host}:{remote_port}")
         self.__table.add_row("over bastion", f"{self.bastion.host}:{self.bastion.port} ({self.bastion.username})")

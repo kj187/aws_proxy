@@ -12,7 +12,7 @@ from aws_proxy.rds.command import rds
 from aws_proxy.opensearch.command import opensearch
 from aws_proxy.elasticache.command import elasticache
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 console = Console()
 
 
