@@ -1,6 +1,6 @@
 # AWS Proxy
 
-The AWS proxy enables you from localhost to reach AWS services which are based in a private subnet (VPC).
+The AWS proxy enables you to reach AWS services which are based in a private subnet (VPC) from localhost.
 
 ## Problem
 
