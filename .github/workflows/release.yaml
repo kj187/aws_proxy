@@ -7,8 +7,14 @@ jobs:
   createrelease:
     name: Create Release
     runs-on: ubuntu-latest
-    container: python:3.8-alpine
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
+    - name: Create Changelog
+      uses: scottbrenner/generate-changelog-action@master
+      id: changelog
+      env:
+        REPO: ${{ github.repository }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -19,7 +25,15 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+        body: |
+          ${{ steps.changelog.outputs.changelog }}
 
+  build_on_alpine:
+    name: Build alpine binary
+    needs: createrelease
+    runs-on: ubuntu-latest
+    container: python:3.8-alpine
+    steps:
     - uses: actions/checkout@v1
     - name: Install dependencies
       run: |
@@ -43,8 +57,42 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ needs.createrelease.outputs.upload_url }}
         asset_path: ./dist/aws_proxy.tar.gz
         asset_name: aws_proxy_linux_alpine_amd64.tar.gz
+        asset_content_type: application/tar+gzip
+
+  build_on_ubuntu:
+    name: Build ubuntu binary
+    needs: createrelease
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install dependencies
+      run: |
+        python --version
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+    - name: build with pyinstaller
+      run: |
+        pyinstaller --onefile --name aws_proxy main.py
+        cd dist/ && tar -czvf aws_proxy.tar.gz aws_proxy
+    - name: run version
+      run: |
+        ./dist/aws_proxy --version
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.createrelease.outputs.upload_url }}
+        asset_path: ./dist/aws_proxy.tar.gz
+        asset_name: aws_proxy_linux_ubuntu_amd64.tar.gz
         asset_content_type: application/tar+gzip
 
