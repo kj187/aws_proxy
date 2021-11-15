@@ -10,7 +10,7 @@ One way to solve this kind of problem is to open a **proxy** to these services.
 And on this way the **AWS Proxy** as a small CLI utility comes into play to support you with that.
 
 ```
-                                              AWS ACCOUNT
+                                             AWS ACCOUNT
 --------------------------------------------------------------------------
                             |    PUBLIC SUBNET              PRIVATE SUBNET
 -------------+              |    +----------+               +-------------
