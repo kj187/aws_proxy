@@ -1,4 +1,4 @@
-name: PyInstaller
+name: New Release
 on:
   push:
     tags:
